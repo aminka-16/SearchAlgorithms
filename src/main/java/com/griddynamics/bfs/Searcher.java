@@ -10,11 +10,15 @@ public class Searcher {
     private LinkedList<Path> queue;
     private Set<String> markedCities;
 
-    public Path search(String cityFrom, String cityTo) {
+    private void initDataStructures() {
         queue = new LinkedList<Path>();
         markedCities = new HashSet<String>();
+    }
+
+    public Path search(String cityFrom, String cityTo) {
         if (!allCities.contains(cityFrom) || !allCities.contains(cityTo))
             return null;
+        initDataStructures();
         queue.add(new Path(cityFrom));
         markedCities.add(cityFrom);
         while (!queue.isEmpty()) {

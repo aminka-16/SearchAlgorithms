@@ -12,15 +12,19 @@ public class Searcher {
     private LinkedList<Path> queue;
     private Set<String> markedCities;
 
-    //TODO: check the algorithm!!!
+    private void initDataStructures() {
+        queue = new LinkedList<Path>();
+        markedCities = new HashSet<String>();
+    }
+
     public Path search(String cityFrom, String cityTo) {
         if (!allCities.contains(cityFrom) || !allCities.contains(cityTo))
             return null;
-        queue = new LinkedList<Path>();
-        markedCities = new HashSet<String>();
+        initDataStructures();
         Path initialPath = new Path(cityFrom, 0);
         HashMap<String, Path> shortestPathes = new HashMap<String, Path>();
         queue.add(initialPath);
+        shortestPathes.put(cityFrom, initialPath);
         while (!queue.isEmpty()) {
             Path path = queue.getFirst();
             String city = path.getLastCity();
@@ -38,6 +42,7 @@ public class Searcher {
                         int newdistance = path.getDistance() + neighbors.get(neighborName);
                         if (oldPath.getDistance() > newdistance) {
                             LinkedList<String> newPath = path.getPath();
+                            newPath.addLast(neighborName);
                             shortestPathes.put(neighborName, new Path(newPath, newdistance));
                         }
                     }

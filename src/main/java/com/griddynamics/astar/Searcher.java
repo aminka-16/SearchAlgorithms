@@ -13,17 +13,22 @@ public class Searcher {
 
     private Set<String> allCities = CityMap.getCities();
     private Set<String> markedCities;
-    private PriorityQueue<Path> queue = new PriorityQueue<Path>(allCities.size(), new Comparator<Path>() {
-        @Override
-        public int compare(Path p1, Path p2) {
-            return (p1.getPathCost() + p1.getHevristicEstimate()) - (p2.getPathCost() + p2.getHevristicEstimate());
-        }
-    });
+    private PriorityQueue<Path> queue;
+
+    private void initDataStructures() {
+        queue = new PriorityQueue<Path>(allCities.size(), new Comparator<Path>() {
+            @Override
+            public int compare(Path p1, Path p2) {
+                return (p1.getPathCost() + p1.getHevristicEstimate()) - (p2.getPathCost() + p2.getHevristicEstimate());
+            }
+        });
+        markedCities = new HashSet<String>();
+    }
 
     public Path search(String cityFrom, String cityTo) {
         if (!allCities.contains(cityFrom) || !allCities.contains(cityTo))
             return null;
-        markedCities = new HashSet<String>();
+        initDataStructures();
         queue.add(new Path(cityFrom));
         while (!queue.isEmpty()) {
             Path path = queue.poll();
